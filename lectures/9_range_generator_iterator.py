@@ -32,20 +32,17 @@ for num in range(3, 20, 2):
 for num in range(10, -6, -2):
     print(num)
 
-# ********************************************Iterables********************************************
+# ********************************************Iterators********************************************
 
 # We use for statement for looping over a list.
-
 for i in [1, 2, 3, 4]:
     print(i)
 
 # If we use it with a string, it loops over its characters.
-
 for c in "python":
     print(c)
 
 # If we use it with a dictionary, it loops over its keys.
-
 for k in {'x': 1, 'y': 2}.keys():
     print(k)
 
@@ -62,7 +59,8 @@ print(list({'x': 1, 'y': 2}))
 
 # The Iteration Protocol
 
-# The built-in function iter takes an iterable object and returns an iterator.
+# The built-in function iter takes an iterable object and returns an iterator object.
+
 
 iterator_object = iter(["a", "b", "c"])
 print(type(iterator_object))
@@ -79,7 +77,8 @@ print(type(iterator_object))
 iterator_object = iter({'a': 1, 'b': 2})
 print(type(iterator_object))
 
-# using next builtin function we can get elements of iterator, element by element
+# An iterator is essentially a value producer that yields successive values from its associated
+# iterable object. The built-in function next() is used to obtain the next value from in iterator.
 
 iterator_object = iter(["a", "b", "c"])
 print(type(iterator_object))
