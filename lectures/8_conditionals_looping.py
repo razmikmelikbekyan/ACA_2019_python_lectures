@@ -142,6 +142,19 @@ print(output)
 output = 'minor' if age < 21 else 'adult'
 print(output)
 
+# if, elif and else in one row
+x, y = 5, 6
+if x > y:
+    output = True
+elif x == y:
+    output = None
+else:
+    output = False
+print(output)
+
+output = True if x > y else None if x == y else None
+print(output)
+
 raining = False
 print("Let's go to the", 'beach' if not raining else 'library')
 
@@ -231,6 +244,28 @@ for fruit in ['apple', 'pear', 'mango', 'melon']:
     print(fruit)
 else:
     print('Done!')
+
+# Example from Homework: create a 3x4x6 3D array and fill in values with "*"
+
+from pprint import pprint
+
+# naive solution
+array = []
+for _ in range(3):
+    tmp_1 = []
+    for _ in range(4):
+        tmp_2 = []
+        for _ in range(6):
+            tmp_2.append("*")
+        tmp_1.append(tmp_2)
+    array.append(tmp_1)
+
+pprint(array)
+print()
+
+# pythonic solution
+array = [[["*"] * 6] * 4] * 3
+pprint(array)
 
 # *******************************************while loop********************************************
 
@@ -346,3 +381,21 @@ for x in range(10):
     if x % 2 == 0:
         continue
     print(x)
+
+# Example 5:
+
+while True:
+    x = input('\nPlease insert an integer: ')
+    if not x.isdigit():
+        print('Your input is not an integer, please try again.')
+        continue
+    x = int(x)
+    if x % 3 == 0 and x % 5 == 0:
+        print('both')
+    elif x % 3 == 0:
+        print('3')
+    elif x % 5 == 0:
+        print('5')
+    else:
+        print('Good by America.')
+    break
