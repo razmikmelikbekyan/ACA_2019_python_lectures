@@ -141,8 +141,8 @@ def y_range(n):
 y_generator = y_range(3)
 print(f"y type is {type(y_generator)}")
 
-# Calling the function does not execute it. We know this because the string "Start from {n}" did not
-# print. Instead, the function returns a generator object which is used to control execution.
+# Calling the function does not execute it. We know this because the string "Start from {n}" did
+# not print. Instead, the function returns a generator object which is used to control execution.
 
 # Generator objects execute when next() is called:
 print(next(y_generator))
@@ -156,23 +156,15 @@ print(next(y_generator))
 
 print(next(y_generator))
 print(next(y_generator))
-print(next(y_generator))
+print(next(y_generator, 'generator is exhausted'))
 
+# we can iterate with for loop also
+y_generator = y_range(3)
 
 # for loop
 for x in y_generator:
     print(x)
 
-# Alternatively you can call a next function and pass generator object.
-print(next(y_generator, 'generator is exhausted'))
-
-
-# Each time the yield statement is executed the function generates a new value.
-
-
-# When a generator function is called, it returns a generator object without even beginning
-# execution of the function. When next method is called for the first time, the function starts
-# executing until it reaches yield statement. The yielded value is returned by the next call.
 
 # The following example demonstrates the interplay between yield
 # and call to next method on generator object.
@@ -192,16 +184,6 @@ print(next(f))
 print(next(f))
 print(next(f, "generator is exhausted"))
 
-
-# after yield 2
-# end
-# Traceback (most recent call last):
-#   File "<stdin>", line 1, in <module>
-# StopIteration
-# >>>
-
-# After yielding all the values next() caused a StopIteration error.
-# What this error informs us of is that all the values have been yielded.
 
 # Fibonacci problem
 
