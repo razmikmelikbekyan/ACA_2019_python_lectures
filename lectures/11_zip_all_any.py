@@ -1,6 +1,6 @@
 # **********************************************zip************************************************
 
-# The purpose of zip() is to map the similar index of multiple containers
+# The purpose of zip() class is to map the similar index of multiple containers
 # so that they can be used just using as single entity.
 
 # Syntax: zip(*iterators)
@@ -10,7 +10,7 @@
 # Return value:
 # Returns a single iterator object, having mapped values from all the containers.
 
-# The zip() function will only iterate over the smallest list passed. If given lists of different
+# The zip() will only iterate over the smallest list passed. If given lists of different
 # lengths, the resulting combination will only be as long as the smallest list passed.
 
 short_list = [4, 5, 6]

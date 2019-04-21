@@ -1,7 +1,12 @@
-# *****************************************Range function******************************************
+# ******************************************range class*******************************************
 
-# The range() function returns a sequence of numbers, starting from 0 by default, and increments
-# by 1 (by default), and ends at a specified number.
+#  The range() class return an object that produces a sequence of integers from start (inclusive)
+#  to stop (exclusive) by step.
+#  range(i, j) produces i, i+1, i+2, ..., j-1.
+#  Start defaults to 0, and stop is omitted!
+#  range(4) produces 0, 1, 2, 3.
+#  These are exactly the valid indices for a list of 4 elements.
+#  When step is given, it specifies the increment (or decrement).
 
 # Syntax
 
@@ -57,10 +62,16 @@ print(','.join({'x': 1, 'y': 2}))
 print(list('Iteration'))
 print(list({'x': 1, 'y': 2}))
 
+# Term	        Meaning
+# Iteration	    The process of looping through the objects or items in a collection
+# Iterable	    An object (or the adjective used to describe an object) that can be iterated over
+# Iterator	    The object that produces successive items or values from its associated iterable
+# iter()	    The built-in function used to obtain an iterator from an iterable
+
+
 # The Iteration Protocol
 
 # The built-in function iter takes an iterable object and returns an iterator object.
-
 
 iterator_object = iter(["a", "b", "c"])
 print(type(iterator_object))
@@ -107,31 +118,46 @@ print(next(iterator_object, "iterator is exhausted"))
 # ***************************************Generators************************************************
 
 # Generator functions allow you to declare a function that behaves like an iterator, i.e.
-# it can be used in a for loop.
-# Generator functions allow us to write a function that can send back a value and then later
-# resume to pick up where it left off. This type of function is a generator in Python,
-# allowing us to generate a sequence of values over time.
-# The main difference in syntax will be the use of a yield statement.
+# it can be used in a for loop. They can be paused and resumed on the fly, returning an object
+# that can be iterated over. Unlike lists, they are lazy and thus produce items one at a time and
+# only when asked. So they are much more memory efficient when dealing with large datasets.
 
-# In most aspects, a generator function will appear very similar to a normal function.
-# The main difference is when a generator function is compiled they become an object that
-# supports an iteration protocol. That means when they are called in your code they don't
-# actually return a value and then exit. Instead, generator functions will automatically suspend
-# and resume their execution and state around the last point of value generation.
-# The main advantage here is that instead of having to compute an entire series of values up front,
-# the generator computes one value and then suspends its activity awaiting the next instruction.
-# This feature is known as state suspension.
-
+# To create a generator, you define a function as you normally would but use the yield statement
+# instead of return, indicating to the interpreter that this function should be treated as an
+# iterator:
 
 def y_range(n):
+    print("start from {n}")
     i = 0
     while i < n:
         yield i
         i += 1
 
 
+# The yield statement pauses the function and saves the local state so that it can be resumed right
+# where it left off.
+
+# What happens when you call this function?
 y_generator = y_range(3)
 print(f"y type is {type(y_generator)}")
+
+# Calling the function does not execute it. We know this because the string "Start from {n}" did not
+# print. Instead, the function returns a generator object which is used to control execution.
+
+# Generator objects execute when next() is called:
+print(next(y_generator))
+
+# When calling next() the first time, execution begins at the start of the function body and
+# continues until the next yield statement where the value to the right of the statement is
+# returned, subsequent calls to next() continue from the yield statement to the end of the
+# function, and loop around and continue from the start of the function body until another yield
+# is called. If yield is not called (which in our case means we don’t go into the if function
+# because i >= n) a StopIteration exception is raised:
+
+print(next(y_generator))
+print(next(y_generator))
+print(next(y_generator))
+
 
 # for loop
 for x in y_generator:
