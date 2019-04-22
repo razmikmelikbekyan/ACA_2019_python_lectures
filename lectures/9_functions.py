@@ -222,8 +222,30 @@ print(value)
 value = f(y=2, x=1, z=3)  # calling as kwargs, with mixed orders
 print(value)
 
-# Generally speaking there are the following options:
-def f(*args):
-    return sum(args)
 
-print(f(1))
+# TODO move down
+# As we just saw, the very meaning of the expression x * y in our simple times function
+# depends completely upon the kinds of objects that x and y are—thus, the same function
+# can perform multiplication in one instance and repetition in another. Python leaves it
+# up to the objects to do something reasonable for the syntax. Really, * is just a dispatch
+# mechanism that routes control to the objects being processed.
+# This turns out to be a crucial philosophical difference between Python and statically
+# typed languages like C++ and Java: in Python, your code is not supposed to care about
+# specific data types.
+
+# Generally speaking there are the following options:
+
+def f(*name, garegin):
+    print(name)
+    print(garegin)
+    return sum(name) * garegin
+
+
+print(f(1, 1, 4, garegin=4))
+
+#
+# def f(*args):
+#     return sum(args)
+#
+#
+# print(f(1))
