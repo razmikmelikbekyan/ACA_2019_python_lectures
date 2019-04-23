@@ -338,6 +338,18 @@ print(f'x={x}, y={y}, z={z}')
 # 3 - then global,
 # 4 - then built-in.
 
+# Please note that the following syntax is wrong for Python:
+
+# x = 10
+# def f(a):
+#     x = 5
+#     global x
+#     x = x * 2
+#     return a
+
+# This is wrong, because we defining x inside a function as a local (x = 5) and then we declare the
+# same x as a global and want to change somehow. This is not possible in Python.
+
 
 # Nested Functions
 
@@ -364,6 +376,31 @@ print(f_1())  # Prints 7 and 49: enclosing def local
 # while a call to the function f_1 is running; it generates a function and assigns it to the name
 # f_2, a local variable within f_1 ’s local scope. In a sense, f_2 is a temporary function that
 # lives only during the execution of (and is visible only to code in) the enclosing f_1 .
+
+# The nonlocal statement for Nested Functions
+
+# Nonlocal variable are used in nested function whose local scope is not defined. This means, the
+# variable can be neither in the local nor the global scope.
+
+def f_1():
+    z = 1
+
+    def f_2():
+        nonlocal z
+
+        z = 2
+
+    f_2()
+    return z ** 2
+
+
+print(f_1())  # it prints 4
+
+
+# In the above code there is a nested function f_2 . The f_2 function is defined in the scope of
+# another function f_1 . In the function f_2 we want to change the variable z, which is not a
+# global one and not a local one for f_2 itself. Python allows to change it by using nonlocal
+# keyword.
 
 
 # *************************************Part 3: *args, **kwargs*************************************
