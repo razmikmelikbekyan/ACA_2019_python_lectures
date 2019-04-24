@@ -668,3 +668,10 @@ print(calc_factorial(5))
 # • Cohesion: each function should have a single, unified purpose.
 # • Size: each function should be relatively small.
 # • Coupling: avoid changing variables in another module file directly.
+
+
+# TODO: add one more lecture file with the following content:
+# TODO: 1. functions as first class objects (passing function to another function as an argument
+# TODO:    adding attributes)
+# TODO: 2. anonymous functions: lambda
+# TODO: 3. functional programming tools (map, filter, reduce)

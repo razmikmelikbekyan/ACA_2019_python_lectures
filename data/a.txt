@@ -1,0 +1,6 @@
+hello
+my name is Razmik
+this is a txt file.
+do you like it?
+
+bye bye
