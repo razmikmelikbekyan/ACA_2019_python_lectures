@@ -30,40 +30,36 @@
 from pathlib import Path
 import os
 
-#
-# # shows the current directory from where the code is run
-# print(Path.cwd())
-# print(os.getcwd())
-#
-# # Getting a Directory listing (everything which is in directory)
-# directory_path = '/home/ubuntu/Desktop/ACA/ACA_2019_python_lectures'
-#
-# files = Path(directory_path)
-# for x in files.iterdir():  # Returns an iterator of all the objects in a directory
-#     print(x)
-#     print(type(x))         # This will be again Path object (PosixPath or WindowsPath)
-#
-#
-# files = os.listdir(directory_path)   # Returns a list of all files and folders in a directory
-# for x in files:
-#     print(x)
-#     print(type(x))                   # This will be str
+# shows the current directory from where the code is run
+print(Path.cwd())
+print(os.getcwd())
 
+# Getting a Directory listing (everything which is in directory)
+directory_path = '/home/ubuntu/Desktop/ACA/ACA_2019_python_lectures'
 
-#
-# # Listing only Files in a Directory
-# directory_path = '/home/ubuntu/Desktop/ACA/ACA_2019_python_lectures'
-#
-# files = Path(directory_path)
-# for x in files.iterdir():
-#     if x.is_file():
-#         print(x)
-#
-# files = os.listdir(directory_path)
-# for x in files:
-#     full_path = os.path.join(directory_path, x)
-#     if os.path.isfile(full_path):
-#         print(full_path)
+files = Path(directory_path)
+for x in files.iterdir():  # Returns an iterator of all the objects in a directory
+    print(x)
+    print(type(x))  # This will be again Path object (PosixPath or WindowsPath)
+
+files = os.listdir(directory_path)  # Returns a list of all files and folders in a directory
+for x in files:
+    print(x)
+    print(type(x))  # This will be str
+
+# Listing only Files in a Directory
+directory_path = '/home/ubuntu/Desktop/ACA/ACA_2019_python_lectures'
+
+files = Path(directory_path)
+for x in files.iterdir():
+    if x.is_file():
+        print(x)
+
+files = os.listdir(directory_path)
+for x in files:
+    full_path = os.path.join(directory_path, x)
+    if os.path.isfile(full_path):
+        print(full_path)
 
 # Listing only Subdirectories in a Directory
 directory_path = '/home/ubuntu/Desktop/ACA/ACA_2019_python_lectures'
@@ -98,3 +94,8 @@ for x in files:
 # Note
 # pathlib.Path() retrieve a directory listing with file attributes combined. This is more efficient
 # than using os.listdir() to list files and then getting file attribute information for each file.
+
+# https://dbader.org/blog/python-file-io
+# https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python
+# https://realpython.com/working-with-files-in-python/
+# https://realpython.com/python-pathlib/
