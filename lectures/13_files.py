@@ -1,4 +1,12 @@
-# ********************************************File Paths*******************************************
+# **********************************************Files**********************************************
+
+# In this lecture we will learn how to work with file system (getting files and their attributes
+# in directory, creating new directories and etc.), how to work with files (open file, read file
+# content, edit file content, delete file and etc.). Lecture will introduce also different file
+# types, which are supported by pure Python (txt, json, csv and etc.)
+
+
+# *************************************Part 1: File system*****************************************
 
 # Working with files and interacting with the file system are important for many different reasons.
 # The simplest cases may involve only reading or writing files, but sometimes more complex tasks
@@ -24,11 +32,10 @@
 
 
 # We will introduce pathlib module and parallel will discuss also os.path module.
-
-
-# Get current directory
 from pathlib import Path
 import os
+
+# Get current directory
 
 # shows the current directory from where the code is run
 print(Path.cwd())
@@ -94,6 +101,50 @@ for x in files:
 # Note
 # pathlib.Path() retrieve a directory listing with file attributes combined. This is more efficient
 # than using os.listdir() to list files and then getting file attribute information for each file.
+
+# Creating a Single Directory
+directory_path = '/home/ubuntu/Desktop/ACA/ACA_2019_python_lectures/new_dir'
+
+p = Path(directory_path)
+p.mkdir()
+
+# if we call again, we will have en error: FileExistsError
+try:
+    p.mkdir()
+except FileExistsError as e:
+    print(e)
+
+# in order to avoid such error we can use exist_ok keyword argument
+p.mkdir(exist_ok=True)
+
+
+# the same with os
+try:
+    os.mkdir(directory_path)  # this do not have exist_ok keyword argument
+except FileExistsError as e:
+    print(e)
+
+
+# Deleting Files and Directories
+
+# To remove single file we can use pathlib.Path.unlink() or os.remove().
+# Both are used for deleting only files and do not delete directories.
+
+
+
+
+# Creating Multiple Directories
+directory_path = '/home/ubuntu/Desktop/ACA/ACA_2019_python_lectures/new_dir/good/directory'
+
+# p = Path(directory_path)
+# p.mkdir(parents=True, exist_ok=True)
+
+# Passing parents=True to Path.mkdir() makes it create the directory 05 and any parent directories
+# necessary to make the path valid.
+
+os.makedirs(directory_path, exist_ok=True)
+
+
 
 # https://dbader.org/blog/python-file-io
 # https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python
