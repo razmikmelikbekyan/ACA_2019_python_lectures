@@ -1,0 +1,18 @@
+id,country,industry,countryCode,organizationType,organizationTypeCode,organizationSize,organizationSizeCode,ageRange,gender,scoring
+201,Spain,Information Technology & Services,ES,Privately Held,P,Nov-50,B,31-40,Male,Win
+202,Germany,Internet,DE,Privately Held,P,Nov-50,B,31-40,Male,Win
+203,United Kingdom,Information Technology & Services,GB,Privately Held,P,Nov-50,B,18-30,Male,Win
+204,Spain,Hospitality,ES,Self Owned,O,51-200,C,41-50,Male,Loss
+205,United States,Accounting,US,Partnership,S,1001-5000,F,41-50,Male,Loss
+206,United States,Accounting,US,Partnership,S,201-500,D,,,Loss
+207,Spain,Management Consulting,ES,Educational,D,1-Oct,A,18-30,Female,Loss
+208,Spain,Internet,ES,Privately Held,P,Nov-50,B,18-30,Male,Win
+209,United States,Financial Services,US,Privately Held,P,1-Oct,A,41-50,Male,Win
+210,United Kingdom,Computer Games,GB,Privately Held,P,1-Oct,A,31-40,Male,Win
+211,Italy,Apparel & Fashion,IT,Public Company,C,1001-5000,F,,,Loss
+212,United States,Internet,US,Public Company,C,1001-5000,F,18-30,Male,Win
+213,Latvia,Gambling & Casinos,LV,Public Company,C,1001-5000,F,,,Loss
+214,United Kingdom,Airlines/Aviation,GB,Privately Held,P,1-Oct,A,31-40,Male,Loss
+215,United States,Financial Services,US,Privately Held,P,Nov-50,B,31-40,Male,Win
+216,,,,,,,,31-40,Male,
+217,Taiwan,,TW,,,,,,,

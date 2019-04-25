@@ -16,22 +16,25 @@
 short_list = [4, 5, 6]
 long_list = ['four', 'five', 'six', 'seven', 'eight']
 
-print(list(zip(short_list, long_list)))
-# [(4, 'four'), (5, 'five'), (6, 'six')]
+for x, y in zip(short_list, long_list):
+    print(x, y)
 
 player_name = ['Ramos', 'Carvajal', 'Kroos', 'Modric', 'Benzema']
 player_number = [4, 2, 8, 10, 9]
 player_position = ['defender', 'defender', 'midfielder', 'midfielder', 'forward']
 
 mapped = zip(player_name, player_number, player_position)
+print(mapped)
+print(type(mapped))
 
 # To view the results we pass the zip object to list.
-
-mapped = list(mapped)
 print(list(mapped))
 
-# [('Ramos', 4, 'defender'), ('Carvajal', 2, 'defender'), ('Kroos', 8, 'midfielder'),
-# ('Modric', 10, 'midfielder'), ('Benzema', 9, 'forward')]
+# [('Ramos', 4, 'defender'),
+# ('Carvajal', 2, 'defender'),
+# ('Kroos', 8, 'midfielder'),
+# ('Modric', 10, 'midfielder'),
+# ('Benzema', 9, 'forward')]
 
 # unzipping values
 
@@ -48,15 +51,15 @@ my_dict = dict(zip(countries, rank))
 
 # **********************************************all************************************************
 
-# The all() method returns True when all elements in the given iterable are true.
+# The all() method returns True when all elements in the given iterable are True.
 # If not, it returns False.
 
 # The syntax of all() method is: all(iterable) -> bool
 
-# All values are true -> True
-# All values are false -> False
-# One value is true (others are false) -> False
-# One value is false (others are true) -> False
+# All values are True -> True
+# All values are False -> False
+# One value is True (others are False) -> False
+# One value is False (others are True) -> False
 # Empty iterable -> True
 
 my_list = [1, 3, 4, 5]
@@ -79,8 +82,8 @@ my_string = 'This is a string'
 print(all(my_string))
 # True
 
-# In case of dictionaries, if all keys (not values) are true or the dictionary is empty,
-# all() returns True. Else, it returns false for all other cases.
+# In case of dictionaries, if all keys (not values) are True or the dictionary is empty,
+# all() returns True. Else, it returns False for all other cases.
 
 my_dict = {0: 'False', 1: 'False'}
 print(all(my_dict))
@@ -100,10 +103,10 @@ print(all(my_dict))
 
 # The syntax of any() method is: any(iterable) -> bool
 
-# All values are true -> True
-# All values are false -> False
-# One value is true (others are false) -> True
-# One value is false (others are true) -> True
+# All values are True -> True
+# All values are False -> False
+# One value is True (others are False) -> True
+# One value is False (others are True) -> True
 # Empty iterable -> False
 
 my_list = [1, 3, 4, 0]
