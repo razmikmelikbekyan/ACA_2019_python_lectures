@@ -392,6 +392,7 @@ with open('ACA_2019_python_lectures/data/a.txt', 'r+') as file_object:
     print(f'\nthe file chunk content is: \n{file_content}')
     print(len(file_content))
     print(type(file_content))
+    print(list(file_content))
     # As you can see, the read operation only read the data in the file up to position 6,
     # which is what we passed to the read() call above. That way you can limit how much data is
     # read from a file in one go.
@@ -402,11 +403,13 @@ with open('ACA_2019_python_lectures/data/a.txt', 'r+') as file_object:
     print(f'\nthe file chunk content is: \n{file_content}')
     print(len(file_content))
     print(type(file_content))
+    print(list(file_content))
 
     file_content = file_object.read(6)
     print(f'\nthe file chunk content is: \n{file_content}')
     print(len(file_content))
     print(type(file_content))
+    print(list(file_content))
     # ....
 
 # readline(limit) method
@@ -420,21 +423,25 @@ with open('ACA_2019_python_lectures/data/a.txt', 'r+') as file_object:
     print(f'\nthe file line content is: \n{line}')
     print(len(line))
     print(type(line))
+    print(list(line))
 
     line = file_object.readline(3)  # second line first 3 chars
     print(f'\nthe file line content is: \n{line}')
     print(len(line))
     print(type(line))
+    print(list(line))
 
     line = file_object.readline()  # second line rest chars
     print(f'\nthe file line content is: \n{line}')
     print(len(line))
     print(type(line))
+    print(list(line))
 
     line = file_object.readline()  # third line
     print(f'\nthe file line content is: \n{line}')
     print(len(line))
     print(type(line))
+    print(list(line))
 
 # As you can see, this reads the whole file into memory and splits it up into several lines. This
 # only works with text files however. A binary file is just a blob of data—it doesn’t really have a
@@ -446,7 +453,7 @@ with open('ACA_2019_python_lectures/data/a.txt', 'r+') as file_object:
 # line in a list format.
 
 with open('ACA_2019_python_lectures/data/a.txt', 'r+') as file_object:
-    lines = file_object.readlines()  # first line
+    lines = file_object.readlines()  # all lines list
     print(f'\nthe file line content is: \n{lines}')
     print(len(lines))
     print(type(lines))
@@ -515,18 +522,18 @@ with open('ACA_2019_python_lectures/data/a.txt', 'a+') as file_object:
 # If you want to check the current position of the pointer, you can use the  fileobject.tell()
 # method, which returns a decimal value for where the pointer is at in the current file.
 
-#
-# with open('ACA_2019_python_lectures/data/a.txt', 'r+') as file_object:
-#     # the initial point is at the beginning of the file
-#     print(file_object.tell())
-#
-#     file_object.seek(38, 0)  # moving 38 characters starting from the beginning of the file
-#     file_object.write('***')
-#     print(file_object.tell())  # >>> 41 = 38 + 3
-#
-#     file_object.seek(0, 2)  # moving to the end
-#     file_object.write('xxxxxxxxxxxxxx')
-#     print(file_object.tell())
+
+with open('ACA_2019_python_lectures/data/a.txt', 'r+') as file_object:
+    # the initial point is at the beginning of the file
+    print(file_object.tell())
+
+    file_object.seek(38, 0)  # moving 38 characters starting from the beginning of the file
+    file_object.write('***')
+    print(file_object.tell())  # >>> 41 = 38 + 3
+
+    file_object.seek(0, 2)  # moving to the end
+    file_object.write('xxxxxxxxxxxxxx')
+    print(file_object.tell())
 
 # Please note that we have changed the file mode to 'r+', because in modes 'a' or 'a+', any writing
 # is done at the end of the file, even if at the current moment when the write() function is
