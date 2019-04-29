@@ -595,7 +595,70 @@ def f(a, *args, b, c):
 print(f(1, 2, 3, 4, b=5, c=78))
 
 
-# ***************************************Part 4: Final Notes***************************************
+# ****************************Part 4: Functions as first class objects*****************************
+
+# To say that functions are first-class in a certain programming language means that they can be
+# passed around and manipulated similarly to how you would pass around and manipulate other kinds
+# of objects (like integers or strings). You can assign a function to a variable, pass it as an
+# argument to another function, etc.
+
+# Properties of first class functions:
+#
+# 1. A function is an instance of the Object type.
+# 2. You can store the function in a variable.
+# 3. You can pass the function as a parameter to another function.
+# 4. You can return the function from a function.
+# 5. You can store them in data structures such as hash tables, lists, …
+
+# 1. Functions are objects:
+# Python functions are first class objects. In the example below, we are assigning function to a
+# variable. This assignment doesn’t call the function. It takes the function object referenced by
+# square and creates a second name pointing to it, new_square.
+
+def square(x):
+    return x * x
+
+
+new_square = square
+print(new_square(7))
+
+# we can sett attributes to it
+setattr(square, 'aaaa', 50)
+print(square.__dict__)
+print(new_square.aaaa)
+
+
+# 2. Functions can be passed as arguments to other functions:
+# Because functions are objects we can pass them as arguments to other functions. Functions that
+# can accept other functions as arguments are also called higher-order functions. In the example
+# below, we have created a function greet which takes a function as an argument.
+
+def verbose_function(f, argument):
+    print(f(argument))
+
+
+verbose_function(square, 4)
+
+
+# 3. Functions can return another function:
+# Because functions are objects we can return a function from another function. In the below
+# example, the create_adder function returns adder function.
+
+def create_adder(x):
+    def adder(y):
+        return x + y
+
+    return adder
+
+
+add_2 = create_adder(2)
+
+print(add_2)
+print(type(add_2))
+print(add_2(5))
+
+
+# ***************************************Part 5: Final Notes***************************************
 
 # Immutable vs Mutable arguments
 
@@ -671,7 +734,5 @@ print(calc_factorial(5))
 
 
 # TODO: add one more lecture file with the following content:
-# TODO: 1. functions as first class objects (passing function to another function as an argument
-# TODO:    adding attributes)
-# TODO: 2. anonymous functions: lambda
-# TODO: 3. functional programming tools (map, filter, reduce)
+# TODO: 1. anonymous functions: lambda
+# TODO: 2. functional programming tools (map, filter, reduce)
