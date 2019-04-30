@@ -185,3 +185,12 @@ As an advanced feature, you can use `__all__` lists in `__init__.py` files to de
 exported when a directory is imported with the from * statement form. In an `__init__.py` file, the
 `__all__` list is taken to be the list of submodule names or submodule attributes that should be 
 automatically imported when from * is used on the package (directory) name.
+
+
+For more details you can check the following links:
+
+* https://docs.python.org/3/tutorial/modules.html
+* https://dev.to/codemouse92/dead-simple-python-project-structure-and-imports-38c6
+* https://docs.python-guide.org/writing/structure/
+* https://realpython.com/python-application-layouts/
+* https://python-packaging.readthedocs.io/en/latest/minimal.html
