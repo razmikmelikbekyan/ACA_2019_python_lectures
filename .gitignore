@@ -1,0 +1,7 @@
+*.pyc
+*.sw[op]
+.cache/
+*logs.txt
+.idea/
+.ipynb_checkpoints/
+*tmp/
