@@ -648,15 +648,3 @@ with open('ACA_2019_python_lectures/data/employee_file.csv', mode='w') as employ
     employee_writer.writerow(['Name', 'Department', 'Month'])
     employee_writer.writerow(['John Smith', 'Accounting', 'November'])
     employee_writer.writerow(['Erica Meyers', 'IT', 'March'])
-
-
-
-# https://dbader.org/blog/python-file-io
-# https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python
-# https://realpython.com/python-json/
-# https://realpython.com/python-csv/
-# https://realpython.com/working-with-files-in-python/
-# https://realpython.com/python-pathlib/
-# https://www.programiz.com/python-programming/file-operation
-# https://docs.python.org/3.6/tutorial/inputoutput.html
-# https://docs.python.org/3.6/library/io.html#module-io
