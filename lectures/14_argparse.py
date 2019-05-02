@@ -286,6 +286,7 @@ parser.add_argument('--name', required=True, dest='aaaa')
 if __name__ == '__main__':
     args = parser.parse_args()
     print(f'Hello {args.aaaa}')
+
 """python 14_argparse.py --name Mark"""
 # The program gives the aaaa name to the --name argument.
 
@@ -303,6 +304,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     for _ in range(args.count):
         print(f'Hello {args.name}')
+
 """python 14_argparse.py --name Mark"""
 # The count value is not required; if not given, the default will be 3.
 
@@ -322,9 +324,9 @@ if __name__ == '__main__':
         for x in args.names:
             print(f'Hello {x}')
 
-# """python 14_argparse.py --name Mark --name John --name Bob"""
+"""python 14_argparse.py --name Mark --name John --name Bob"""
 # The example produces greeting messages to all names specified with the name option; they can be
-# repeated multipile times.
+# repeated multiple times.
 
 
 # nargs
