@@ -9,4 +9,6 @@
 from helpers.checkers import *
 from helpers.utils.math_tools import *
 
-# __all__ = [check_input, square]
+print('I am helpers init')
+
+# __all__ = ["check_input", "square"]
