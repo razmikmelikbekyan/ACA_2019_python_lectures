@@ -13,7 +13,7 @@ def create_books_data():
 
 
 def _parse_from_line(line: str) -> Dict:
-    """Parses one line of books.txt"""
+    """Helper function which parses one line of books.txt"""
     [code, name, author, quantity, available_quantity] = line.split(" $$ ")
     return {
         'code': code,
@@ -29,7 +29,9 @@ def _parse_to_line(code: str,
                    author: str,
                    quantity: int,
                    available_quantity: int) -> str:
-    """Parses given book data to the line, which can be added to the books.txt ."""
+    """
+    Helper function which parses given book data to the line, which can be added to the books.txt .
+    """
     return " $$ ".join([code, name, author, str(quantity), str(available_quantity)]) + '\n'
 
 
@@ -62,25 +64,25 @@ def find_book(code: str) -> Dict:
 def add_book(code: str, name: str, author: str, quantity: int, available_quantity: int = None):
     """Adds given book to the database, which is a txt file, where each row is book."""
 
-    if len(code) != 5:
-        raise ValueError('Book code must have length 5.')
+    if not code or not isinstance(code, str) or len(code) != 5:
+        raise ValueError('Book code must be a string with length 5.')
 
     if not code.isalnum():
         raise ValueError('Book code must be alphanumeric.')
 
-    if len(name) > 100:
-        raise ValueError('Book name can have maximum length 100.')
+    if not name or not isinstance(name, str) or len(name) > 100:
+        raise ValueError('Book name must be a string with maximum length 100.')
 
     if not name.isalnum():
         raise ValueError('Book name must be alphanumeric.')
 
-    if len(author) > 45:
-        raise ValueError('Book author can have maximum length 45.')
+    if not author or not isinstance(author, str) or len(author) > 45:
+        raise ValueError('Book author must be a string with maximum length 45.')
 
     if not author.isalnum():
         raise ValueError('Book author must be alphanumeric.')
 
-    if quantity <= 0:
+    if not quantity or not isinstance(quantity, int) or quantity <= 0:
         raise ValueError('Book quantity must be positive integer.')
 
     if available_quantity and available_quantity < 0:
@@ -108,24 +110,44 @@ def delete_book(code: str):
         in_file.writelines(books)
 
 
-def give_book_to_user(search_code: str):
-    """Gives book to user: aka decreases book available quantity by 1."""
+def _interact_with_user(code: str, increase: bool):
+    """
+    Helper function for interacting with user. It increases or decreases available_quantity by 1.
+    """
+    quantity = +1 if increase else -1
 
-    book_data = find_book(search_code)
+    books = []
+    with open(BOOKS, 'r') as in_file:
+        for line in in_file:
+            if line[:5] == code:
+                line_data = _parse_from_line(line)
+                line_data['available_quantity'] += quantity
+                line = _parse_to_line(*list(line_data.values()))
+            books.append(line)
+
+    with open(BOOKS, 'w') as in_file:
+        in_file.writelines(books)
+
+
+def give_book_to_user(code: str):
+    """Gives book to user from library: aka decreases book available_quantity by 1."""
+
+    book_data = find_book(code)
 
     if not book_data:
         raise ValueError('Book is not in library.')
     elif book_data['available_quantity'] == 0:
         print('Sorry there is no available book at this moment.')
     else:
-        books = []
-        with open(BOOKS, 'r') as in_file:
-            for line in in_file:
-                if line[:5] == search_code:
-                    line_data = _parse_from_line(line)
-                    line_data['available_quantity'] -= 1
-                    line = _parse_to_line(*list(line_data.values()))
-                books.append(line)
+        _interact_with_user(code, True)
 
-        with open(BOOKS, 'w') as in_file:
-            in_file.writelines(books)
+
+def get_book_from_user(code: str):
+    """Gets book from user back to library: aka increases book available_quantity by 1."""
+
+    book_data = find_book(code)
+
+    if not book_data:
+        raise ValueError('Book is not in library.')
+    else:
+        _interact_with_user(code, False)
