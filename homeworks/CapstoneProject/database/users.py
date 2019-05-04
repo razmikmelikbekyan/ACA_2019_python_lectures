@@ -1,14 +1,15 @@
 from pathlib import Path
 from typing import Dict, List
+import json
 
-BOOKS = "database/books.txt"
+USERS = "users.json"
 
 
-def create_books_data():
-    """Creates an empty txt file for storing books data."""
-    p = Path(BOOKS)
+def create_users_data():
+    """Creates an empty json file for storing users data."""
+    p = Path(USERS)
     if not p.exists():
-        with open(BOOKS, 'w') as infile:
+        with open(USERS, 'w') as infile:
             pass
 
 
@@ -37,7 +38,7 @@ def _parse_to_line(code: str,
 
 def get_all_books() -> List[Dict]:
     """Returns all books data in a list, where each item in a list is one book."""
-    with open(BOOKS, 'r') as in_file:
+    with open(USERS, 'r') as in_file:
         return [_parse_from_line(line) for line in in_file]
 
 
@@ -93,7 +94,7 @@ def add_book(code: str, name: str, author: str, quantity: int, available_quantit
 
     available_quantity = available_quantity if available_quantity else quantity
 
-    with open(BOOKS, mode='a') as in_file:
+    with open(USERS, mode='a') as in_file:
         in_file.write(_parse_to_line(code, name, author, quantity, available_quantity))
 
 
@@ -103,10 +104,10 @@ def delete_book(code: str):
     if not find_book(code):
         raise ValueError('Book not in library.')
 
-    with open(BOOKS, 'r') as in_file:
+    with open(USERS, 'r') as in_file:
         books = [line for line in in_file if line[:5] != code]
 
-    with open(BOOKS, 'w') as in_file:
+    with open(USERS, 'w') as in_file:
         in_file.writelines(books)
 
 
@@ -117,7 +118,7 @@ def _interact_with_user(code: str, increase: bool):
     quantity = +1 if increase else -1
 
     books = []
-    with open(BOOKS, 'r') as in_file:
+    with open(USERS, 'r') as in_file:
         for line in in_file:
             if line[:5] == code:
                 line_data = _parse_from_line(line)
@@ -125,7 +126,7 @@ def _interact_with_user(code: str, increase: bool):
                 line = _parse_to_line(*list(line_data.values()))
             books.append(line)
 
-    with open(BOOKS, 'w') as in_file:
+    with open(USERS, 'w') as in_file:
         in_file.writelines(books)
 
 

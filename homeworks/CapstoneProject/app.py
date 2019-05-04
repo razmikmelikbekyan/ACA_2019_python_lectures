@@ -9,6 +9,8 @@ parser.add_argument('--book', type=str, help='Book code')
 parser.add_argument('--name', type=str, help='Book name')
 parser.add_argument('--author', type=str, help='Book author')
 parser.add_argument('--quantity', type=int, help='Book quantity')
+parser.add_argument('--user', type=str, help='User code')
+
 
 if __name__ == '__main__':
     args = parser.parse_args()
