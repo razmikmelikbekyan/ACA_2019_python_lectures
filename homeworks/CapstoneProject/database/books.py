@@ -5,7 +5,10 @@ BOOKS = "database/books.txt"
 
 
 def create_books_data():
-    """Creates an empty txt file for storing books data."""
+    """
+    Creates an empty txt file for storing books data. If the file already exists, it should
+    not do anything.
+    """
     p = Path(BOOKS)
     if not p.exists():
         with open(BOOKS, 'w') as infile:
@@ -61,7 +64,7 @@ def find_book(code: str) -> Dict:
     return {}
 
 
-def add_book(code: str, name: str, author: str, quantity: int, available_quantity: int = None):
+def add_book(code: str, name: str, author: str, quantity: int):
     """Adds given book to the database, which is a txt file, where each row is book."""
 
     if not code or not isinstance(code, str) or len(code) != 5:
@@ -85,43 +88,44 @@ def add_book(code: str, name: str, author: str, quantity: int, available_quantit
     if not quantity or not isinstance(quantity, int) or quantity <= 0:
         raise ValueError('Book quantity must be positive integer.')
 
-    if available_quantity and available_quantity < 0:
-        raise ValueError('Book available quantity must be non negative integer.')
-
     if find_book(code):
         raise ValueError('Book already in library.')
 
-    available_quantity = available_quantity if available_quantity else quantity
-
     with open(BOOKS, mode='a') as in_file:
-        in_file.write(_parse_to_line(code, name, author, quantity, available_quantity))
+        in_file.write(_parse_to_line(code, name, author, quantity, quantity))
+    print('Book is added.')
 
 
 def delete_book(code: str):
     """Deletes book from database."""
+    book_data = find_book(code)
 
-    if not find_book(code):
-        raise ValueError('Book not in library.')
+    if not book_data:
+        raise ValueError(f'The book with code="{code}" is not in library.')
+
+    if book_data['quantity'] != book_data['available_quantity']:
+        raise ValueError('There are users, who have not returned books.')
 
     with open(BOOKS, 'r') as in_file:
         books = [line for line in in_file if line[:5] != code]
 
     with open(BOOKS, 'w') as in_file:
         in_file.writelines(books)
+    print('Book is deleted.')
 
 
 def _interact_with_user(code: str, increase: bool):
     """
     Helper function for interacting with user. It increases or decreases available_quantity by 1.
     """
-    quantity = +1 if increase else -1
+    change = +1 if increase else -1
 
     books = []
     with open(BOOKS, 'r') as in_file:
         for line in in_file:
             if line[:5] == code:
                 line_data = _parse_from_line(line)
-                line_data['available_quantity'] += quantity
+                line_data['available_quantity'] += change
                 line = _parse_to_line(*list(line_data.values()))
             books.append(line)
 
@@ -130,24 +134,30 @@ def _interact_with_user(code: str, increase: bool):
 
 
 def give_book_to_user(code: str):
-    """Gives book to user from library: aka decreases book available_quantity by 1."""
+    """
+    Gives book to user from library: decreases book available_quantity by 1.
+    """
 
     book_data = find_book(code)
 
     if not book_data:
-        raise ValueError('Book is not in library.')
+        raise ValueError(f'The book with code="{code}" is not in library.')
     elif book_data['available_quantity'] == 0:
-        print('Sorry there is no available book at this moment.')
+        raise ValueError('Sorry there is no available book at this moment.')
     else:
-        _interact_with_user(code, True)
+        _interact_with_user(code, False)
+        print('Book have been given to user.')
 
 
 def get_book_from_user(code: str):
-    """Gets book from user back to library: aka increases book available_quantity by 1."""
+    """
+    Gets book from user back to library: increases book available_quantity by 1.
+    """
 
     book_data = find_book(code)
 
     if not book_data:
-        raise ValueError('Book is not in library.')
+        raise ValueError(f'The book with code="{code}" is not in library.')
     else:
-        _interact_with_user(code, False)
+        _interact_with_user(code, True)
+        print('Book have been gotten from user.')

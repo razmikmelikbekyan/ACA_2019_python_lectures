@@ -1,154 +1,106 @@
+import json
 from pathlib import Path
 from typing import Dict, List
-import json
 
-USERS = "users.json"
+USERS = "database/users.json"
 
 
 def create_users_data():
-    """Creates an empty json file for storing users data."""
+    """
+    Creates an empty json file for storing users data. If the file already exists, it should
+    not do anything.
+    """
     p = Path(USERS)
     if not p.exists():
         with open(USERS, 'w') as infile:
             pass
 
 
-def _parse_from_line(line: str) -> Dict:
-    """Helper function which parses one line of books.txt"""
-    [code, name, author, quantity, available_quantity] = line.split(" $$ ")
-    return {
-        'code': code,
-        'name': name,
-        'author': author,
-        'quantity': int(quantity),
-        'available_quantity': int(available_quantity.replace('\n', ''))
-    }
+def get_all_users() -> Dict[str, List[str]]:
+    """Returns all users data in a dict: {user: [user_books]}."""
+    with open(USERS, 'r') as infile:
+        try:
+            return json.load(infile)
+        except ValueError:
+            return {}
 
 
-def _parse_to_line(code: str,
-                   name: str,
-                   author: str,
-                   quantity: int,
-                   available_quantity: int) -> str:
+def get_user_books(code: str) -> List[str] or str:
     """
-    Helper function which parses given book data to the line, which can be added to the books.txt .
+    Finds user by its code in users database and returns it's books data: the list of books, which
+    user have been taken from library. If user does not exist in user database, returns string:
+    "user not in database".
     """
-    return " $$ ".join([code, name, author, str(quantity), str(available_quantity)]) + '\n'
+    all_users = get_all_users()
+    return all_users.get(code, 'user not in database')
 
 
-def get_all_books() -> List[Dict]:
-    """Returns all books data in a list, where each item in a list is one book."""
-    with open(USERS, 'r') as in_file:
-        return [_parse_from_line(line) for line in in_file]
+def add_user(code: str):
+    """Adds given user to the database."""
 
-
-def find_book(code: str) -> Dict:
-    """
-    Finds book by its code in library and returns it's data in the form of dict. If the book is not
-    in the library, return an empty dict.
-
-    For example:
-    {
-        'code': 'a1254',
-        'name': 'The Idiot',
-        'author': 'Fyodor Dostoyevsky',
-        'quantity': 4,
-        'available_quantity': 2
-    }
-    """
-    for book in get_all_books():
-        if book['code'] == code:
-            return book
-    return {}
-
-
-def add_book(code: str, name: str, author: str, quantity: int, available_quantity: int = None):
-    """Adds given book to the database, which is a txt file, where each row is book."""
-
-    if not code or not isinstance(code, str) or len(code) != 5:
-        raise ValueError('Book code must be a string with length 5.')
+    if not code or not isinstance(code, str) or len(code) != 6:
+        raise ValueError('User code must be a string with length 6.')
 
     if not code.isalnum():
-        raise ValueError('Book code must be alphanumeric.')
+        raise ValueError('User code must be alphanumeric.')
 
-    if not name or not isinstance(name, str) or len(name) > 100:
-        raise ValueError('Book name must be a string with maximum length 100.')
+    all_users = get_all_users()
+    if code in all_users:
+        raise ValueError('User already is in database.')
 
-    if not name.isalnum():
-        raise ValueError('Book name must be alphanumeric.')
+    all_users[code] = []
 
-    if not author or not isinstance(author, str) or len(author) > 45:
-        raise ValueError('Book author must be a string with maximum length 45.')
-
-    if not author.isalnum():
-        raise ValueError('Book author must be alphanumeric.')
-
-    if not quantity or not isinstance(quantity, int) or quantity <= 0:
-        raise ValueError('Book quantity must be positive integer.')
-
-    if available_quantity and available_quantity < 0:
-        raise ValueError('Book available quantity must be non negative integer.')
-
-    if find_book(code):
-        raise ValueError('Book already in library.')
-
-    available_quantity = available_quantity if available_quantity else quantity
-
-    with open(USERS, mode='a') as in_file:
-        in_file.write(_parse_to_line(code, name, author, quantity, available_quantity))
+    with open(USERS, mode='w') as in_file:
+        json.dump(all_users, in_file, indent=2)
+    print('User is added.')
 
 
-def delete_book(code: str):
-    """Deletes book from database."""
+def delete_user(code: str):
+    """Deletes user from database."""
+    all_users = get_all_users()
 
-    if not find_book(code):
-        raise ValueError('Book not in library.')
+    if code not in all_users:
+        raise ValueError(f'The user with code="{code}" is not in database.')
 
-    with open(USERS, 'r') as in_file:
-        books = [line for line in in_file if line[:5] != code]
+    if all_users[code]:
+        raise ValueError('User has not returned books.')
+
+    all_users.pop(code)
 
     with open(USERS, 'w') as in_file:
-        in_file.writelines(books)
+        json.dump(all_users, in_file, indent=2)
+    print('User is deleted.')
 
 
-def _interact_with_user(code: str, increase: bool):
-    """
-    Helper function for interacting with user. It increases or decreases available_quantity by 1.
-    """
-    quantity = +1 if increase else -1
+def get_book_from_library(user_code: str, book_code: str):
+    """Gets book from library: adds book code to user books data."""
 
-    books = []
-    with open(USERS, 'r') as in_file:
-        for line in in_file:
-            if line[:5] == code:
-                line_data = _parse_from_line(line)
-                line_data['available_quantity'] += quantity
-                line = _parse_to_line(*list(line_data.values()))
-            books.append(line)
+    all_users = get_all_users()
+
+    if user_code not in all_users:
+        raise ValueError(f'The user with code="{user_code}" is not in database.')
+
+    all_users[user_code].append(book_code)
 
     with open(USERS, 'w') as in_file:
-        in_file.writelines(books)
+        json.dump(all_users, in_file, indent=2)
+    print('User have been gotten book.')
 
 
-def give_book_to_user(code: str):
-    """Gives book to user from library: aka decreases book available_quantity by 1."""
+def return_book_to_library(user_code: str, book_code: str):
+    """Return book to library: deletes book code from user books data."""
 
-    book_data = find_book(code)
+    all_users = get_all_users()
 
-    if not book_data:
-        raise ValueError('Book is not in library.')
-    elif book_data['available_quantity'] == 0:
-        print('Sorry there is no available book at this moment.')
-    else:
-        _interact_with_user(code, True)
+    if user_code not in all_users:
+        raise ValueError(f'The user with code="{user_code}" is not in database.')
 
+    if book_code not in all_users[user_code]:
+        raise ValueError(
+            f'The user with code="{user_code}" does not have the book with code="{book_code}".')
 
-def get_book_from_user(code: str):
-    """Gets book from user back to library: aka increases book available_quantity by 1."""
+    all_users[user_code].remove(book_code)
 
-    book_data = find_book(code)
-
-    if not book_data:
-        raise ValueError('Book is not in library.')
-    else:
-        _interact_with_user(code, False)
+    with open(USERS, 'w') as in_file:
+        json.dump(all_users, in_file, indent=2)
+    print('User have been returned book.')

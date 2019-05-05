@@ -54,8 +54,7 @@ This module should contain the following functions:
                raise an error if there is a book with the same code
                
 * *delete_book* - deletes book from database, should raise an exception if its quantity and 
-                  available quantity are not equal (aka there are users, who have not returned 
-                  books)
+                  available quantity are not equal (there are users, who have not returned books)
                
 * *find_book* - finds book by given search code, if book is not found returns an empty dict, 
                 otherwise returns book data in the form of dict -                
@@ -72,10 +71,9 @@ This module should contain the following functions:
 * *get_all_books* - returns the list of all books data, where each item of the list is a book data 
                     dictionary (see above example)
                     
-* *give_book_to_user* - gives book to user from library: aka decreases book available_quantity by 1
+* *give_book_to_user* - gives book to user from library: decreases book available_quantity by 1
 
-* *get_book_from_user* - gets book from user back to library: aka increases book 
-                         available_quantity by 1
+* *get_book_from_user* - gets book from user back to library: increases book available_quantity by 1
 
 
 #### Users
@@ -87,7 +85,7 @@ You should users and books, which their get from library in a **users.json** fil
 it should be **user_code: [book_code_1, book_code_2, ...]**.
 
 * *user_code* - string with length 6, only alphanumeric
-* *book_code* - this is the same code as described in *books* part
+* *book_code* - this is the same code as described in *books* partaka
 
 ##### **users.py** 
 
@@ -95,12 +93,14 @@ This module should contain the following functions:
 
 * *create_users_data* - creates an empty *users.json* file
 
-* *add_user* - adds user in *users.json* with empty books data, aka **user_code: []**
+* *get_all_users* - returns the dictionary, with all users data
+aka
+* *add_user* - adds user in *users.json* with empty books data: **user_code: []**
 
-* *delete_user* - deletes user from *users.json*, should raise an exception, if user has not 
+* *delete_user* - deletes user from *users.json*, should raise an exception, if user has not aka
                   returned books
 
-* *get_user_books* - prints out user's books
+* *get_user_books* - returns the list of user's books
 
 * *get_book_from_library* - modifies user's books data by adding a book_code, should raise an 
                             exception, if user is not in database 
@@ -115,10 +115,10 @@ This is the application runner file, which should be called from console. Please
 will be called directly from project directory: `python app.py [commands]`. You should use python
 built in module `argparse` for handling passed commands. It should get the following arguments:
 
-* --o - the operation, which the application user wants to perform: **add_book, delete_book, 
-        find_book, get_all_books, add_user, delete_user, get_user_books, get_book_from_library, 
-        return_book_to_library**, this should be required argument and its possible inputs should 
-        be restricted by using `choices`
+* --o - the operation, which the application user wants to perform: **'get_all_books', 'add_book',
+        'find_book', 'delete_book', 'get_all_users', 'add_user', 'get_user_books', 'delete_user',
+        'get_book_from_library', 'return_book_to_library'**, this should be required argument and 
+        its possible inputs should be restricted by using `choices`
         
 * --book - book code
 
@@ -143,3 +143,14 @@ library you should call the following command from console:
 This command should call 2 functions: **give_book_to_user** and **get_book_from_library**, the 
 first one will check the book availability in library, will decrease available quantity by 1 in 
 *books.txt* and the second one will add book to user's books data in *users.json* .
+
+
+Please note also that if you will troubles with reading an empty json, you should use `try except`:
+
+```
+with open(USERS, 'r') as infile:
+    try:
+        return json.load(infile)
+    except ValueError:
+        return {}
+```
