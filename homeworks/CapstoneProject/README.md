@@ -145,7 +145,8 @@ first one will check the book availability in library, will decrease available q
 *books.txt* and the second one will add book to user's books data in *users.json* .
 
 
-Please note also that if you will troubles with reading an empty json, you should use `try except`:
+Please note also that if you will have troubles when reading an empty json, you should use `try 
+except`:
 
 ```
 with open(USERS, 'r') as infile:
