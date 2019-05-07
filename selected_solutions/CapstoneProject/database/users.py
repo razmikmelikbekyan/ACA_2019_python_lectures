@@ -13,16 +13,13 @@ def create_users_data():
     p = Path(USERS)
     if not p.exists():
         with open(USERS, 'w') as infile:
-            pass
+            json.dump({}, infile)
 
 
 def get_all_users() -> Dict[str, List[str]]:
     """Returns all users data in a dict: {user: [user_books]}."""
     with open(USERS, 'r') as infile:
-        try:
-            return json.load(infile)
-        except ValueError:
-            return {}
+        return json.load(infile)
 
 
 def get_user_books(code: str) -> List[str] or str:

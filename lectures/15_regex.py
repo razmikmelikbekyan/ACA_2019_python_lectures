@@ -93,6 +93,12 @@ print(pattern.sub(' ', text))
 # or
 print(re.sub('\s+', ' ', text))
 
+# Please note that it removes not only spaces but also new lines and tabs. Generally in python
+# whitespaces are the following items:
+import string
+
+print(f'white spaces are: {list(string.whitespace)}')
+
 # Suppose you only want to get rid of the extra spaces but want to keep the course entries in the
 # new line itself. To achieve that you should use a regex that effectively excludes new line
 # characters but includes all other whitespaces.
@@ -101,6 +107,9 @@ print(re.sub('\s+', ' ', text))
 # and excludes it from the pattern.
 
 print(re.sub('((?!\n)\s+)', ' ', text))
+
+# Or you can use RegEx pattern ' +' for 1 or more spaces:
+print(re.sub(' +', ' ', text))
 
 # ************************************Part 2: RegEx groups*****************************************
 

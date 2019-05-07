@@ -1,5 +1,7 @@
 # ******************************************Numpy**************************************************
 
+# This lecture introduces the most famous numerical python package Numpy.
+
 # Numpy is the most basic and a powerful package for working with data in python.
 
 # At the core, numpy provides the excellent ndarray objects, short for n-dimensional arrays.
@@ -10,14 +12,17 @@
 
 # There are several important differences between NumPy arrays and the standard Python sequences:
 
-#  - NumPy arrays have a fixed size at creation, unlike Python lists (which can grow dynamically).
-#  Changing the size of an ndarray will create a new array and delete the original.
+# - NumPy arrays have a fixed size at creation, unlike Python lists (which can grow dynamically).
+# Changing the size of an ndarray will create a new array and delete the original.
+
 # - The elements in a NumPy array are all required to be of the same data type, and thus will be
 # the same size in memory. The exception: one can have arrays of (Python, including NumPy) objects,
 # thereby allowing for arrays of different sized elements.
+
 # - NumPy arrays facilitate advanced mathematical and other types of operations on large numbers of
 # data. Typically, such operations are executed more efficiently and with less code than is
 # possible using Python’s built-in sequences.
+
 # - A growing plethora of scientific and mathematical Python-based packages are using NumPy arrays;
 # though these typically support Python-sequence input, they convert such input to NumPy arrays
 # prior to processing, and they often output NumPy arrays. In other words, in order to efficiently
@@ -26,7 +31,6 @@
 # to use NumPy arrays.
 
 # Behind the scenes most of code is executed by pre-compiled C code.
-
 
 import cv2
 import numpy as np
@@ -52,7 +56,8 @@ array_1_d = np.array(list_1)
 # list_1 + 2  # produces an error
 
 # That was not possible with a list. But you can do that on a ndarray.
-# Add 2 to each element of array.
+# Add 2 to each element of array. This kind of performance is call vectorized performance, which is
+# the main advantage of numpy.
 
 print(array_1_d + 2)
 
@@ -147,10 +152,10 @@ print(np.arange(0, 10))  # 0 to 9
 print(np.arange(0, 10, 2))  # 0 to 9 step of 2
 print(np.arange(10, 0, -1))  # 10 to 1, decreasing order
 
-# Create an array of exactly 10 numbers between 1 and 50
+# Create an array of exactly 10 numbers between 1 and 50:
 np.linspace(start=1, stop=50, num=50, dtype='int')
 
-# The np.zeros and np.ones functions lets you create arrays of desired shape  where all the items
+# The np.zeros and np.ones functions lets you create arrays of desired shape where all the items
 # are either 0’s or 1’s.
 
 print(np.zeros((2, 2)))
@@ -188,21 +193,6 @@ print(np.random.choice(['a', 'e', 'i', 'o', 'u'], size=10))
 #  Pick 10 items from a given list with a predefined probability 'p'
 print(np.random.choice(['a', 'e', 'i', 'o', 'u'], size=10, p=[0.3, 0.1, 0.1, 0.4, 0.1]))
 
-# If you want to repeat the same set of random numbers every time, you need to set the seed or
-# the random state. The seed can be any value. The only requirement is you must set the seed to the
-# same value every time you want to generate the same set of random numbers.
-rn = np.random.RandomState(100)
-
-# Once np.random.RandomState is created, all the functions of the np.random module becomes
-# available to the created randomstate object.
-
-# Create random numbers between [0,1) of shape 2,2
-print(rn.rand(2, 2))
-
-# Set the random seed
-np.random.seed(100)
-print(np.random.rand(2, 2))
-
 # How to get the unique items and the counts?
 arr_rand = np.random.randint(0, 10, size=10)
 print(arr_rand)
@@ -213,6 +203,9 @@ print('Counts: ', counts)
 
 # Copies and Views
 
+# Different array objects can share the same data.
+# The view method creates a new array object that looks at the same data.
+
 a = np.arange(12)
 print(a)
 b = a  # no new object is created
@@ -220,8 +213,7 @@ print(f'b is a: {b is a}')  # a and b are two names for the same ndarray object
 b.shape = 3, 4  # changes the shape of a also
 print(a.shape)
 
-# Different array objects can share the same data. The view method creates a new array object that
-# looks at the same data.
+# View
 a = np.arange(12)
 b = a.view()
 print(f'b is a: {b is a}')
@@ -356,3 +348,90 @@ print(arr[bool_indexing])
 
 # To count the number of True entries in a Boolean array, np.count_nonzero is useful:
 print(np.count_nonzero(arr < 6))
+
+# *******************************Simple Image Processing with Numpy********************************
+
+import matplotlib.pyplot as plt
+
+image = cv2.imread('data/rgb.png')
+print(type(image))
+print(image.shape)
+print(image.dtype)
+
+
+# Please note when you read a RGB image with OpenCV your image channels is switched: BGR
+
+def bgr_to_rgb(im):
+    """Converts BGR to RGB."""
+    tmp = np.empty(im.shape, dtype=np.uint8)
+    tmp[..., 0] = im[..., 2]
+    tmp[..., 1] = im[..., 1]
+    tmp[..., 2] = im[..., 0]
+    return tmp
+
+
+image = bgr_to_rgb(image)
+print(image.shape)
+
+
+def plot_image(im, h=8, **kwargs):
+    """
+    Helper function to plot an image.
+    """
+    y = im.shape[0]
+    x = im.shape[1]
+    w = (y / x) * h
+    plt.figure(figsize=(w, h))
+    plt.imshow(im, interpolation="none", **kwargs)
+
+    plt.axis('off')
+    plt.show()
+
+
+# plotting an image
+plot_image(image)
+
+# plotting image channels
+fig, axs = plt.subplots(nrows=1, ncols=3, figsize=(15, 5))
+
+for i, ax, channel in zip(range(3), axs, ('green', 'red', 'blue')):
+    ax.set_title(' '.join([channel, 'channel']))
+    ax.imshow(image[:, :, i])
+    ax.set_axis_off()
+plt.show()
+
+
+def to_grayscale(im, weights=(0.299, 0.587, 0.114)):
+    """
+    Transforms a RGB image to a greyscale image by taking the weighted mean of the RGB values.
+    """
+    gray_im = im[:, :, 0] * weights[0] + im[:, :, 1] * weights[1] + im[:, :, 2] * weights[2]
+    return (gray_im).astype(np.uint8)
+
+
+#
+# def to_grayscale(im, weights=(0.299, 0.587, 0.114)):
+#     """
+#     Transforms a colour image to a greyscale image by taking the weighted mean of the RGB values.
+#     """
+#     return np.dot(im, weights)
+
+
+gray_image = to_grayscale(image)
+plot_image(gray_image)
+cv2.imwrite('data/gray_image.png', gray_image)
+
+
+def simple_threshold(im, threshold=128):
+    return ((im > threshold) * 255).astype("uint8")
+
+
+thresholds = [100, 120, 128, 138, 150]
+
+fig, axs = plt.subplots(nrows=1, ncols=len(thresholds), figsize=(20, 5))
+
+for t, ax in zip(thresholds, axs):
+    ax.imshow(simple_threshold(gray_image, t), cmap='Greys')
+    ax.set_title("Threshold: {}".format(t), fontsize=20)
+    ax.set_axis_off()
+plt.show()
