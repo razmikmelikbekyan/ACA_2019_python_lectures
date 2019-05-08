@@ -394,7 +394,7 @@ plot_image(image)
 # plotting image channels
 fig, axs = plt.subplots(nrows=1, ncols=3, figsize=(15, 5))
 
-for i, ax, channel in zip(range(3), axs, ('green', 'red', 'blue')):
+for i, ax, channel in zip(range(3), axs, ('red', 'green', 'blue')):
     ax.set_title(' '.join([channel, 'channel']))
     ax.imshow(image[:, :, i])
     ax.set_axis_off()
